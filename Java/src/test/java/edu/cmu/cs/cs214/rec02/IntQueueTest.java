@@ -47,6 +47,7 @@ public class IntQueueTest {
     @Test
     public void testIsEmpty() {
         assertTrue(mQueue.isEmpty());
+        assertTrue(mQueue.size() == 0);
     }
 
     @Test
@@ -113,5 +114,30 @@ public class IntQueueTest {
         }
     }
 
+    @Test
+    public void testEnsureCapacity() {
+        final int originalSize = 10;
+        for (int i = 0; i < originalSize; i++) {
+            mQueue.enqueue(testList.get(i));
+        }
+        for (int i = originalSize; i < testList.size(); i++) {
+            mQueue.enqueue(testList.get(i));
+        }  
+        mQueue.enqueue(1);
+        for (int i = 0; i < testList.size(); i++) {
+            assertEquals(testList.get(i), mQueue.dequeue());
+            assertEquals(testList.size() - i, mQueue.size());
+        }
+    }
+
+    @Test
+    public void testClear() {
+        testList.forEach(n -> mQueue.enqueue(n));
+        assertFalse(mQueue.isEmpty());
+        mQueue.clear();
+        assertTrue(mQueue.isEmpty());
+        assertTrue(mQueue.size() == 0);
+        assertNull(mQueue.peek());
+    }
 
 }
