@@ -9,6 +9,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static org.junit.Assert.*;
 
@@ -27,16 +29,19 @@ public class IntQueueTest {
     private IntQueue mQueue;
     private List<Integer> testList;
 
+    private final int arraySize = 20;
+
     /**
      * Called before each test.
      */
     @Before
     public void setUp() {
         // comment/uncomment these lines to test each class
-        mQueue = new LinkedIntQueue();
-//        mQueue = new ArrayIntQueue();
+        // mQueue = new LinkedIntQueue();
+       mQueue = new ArrayIntQueue();
 
-        testList = new ArrayList<>(List.of(1, 2, 3));
+        testList = new ArrayList<>(Stream.iterate(1, n->n+1).limit(arraySize)
+            .collect(Collectors.toList()));
     }
 
     @Test
@@ -60,6 +65,14 @@ public class IntQueueTest {
         Integer input = 1;
         mQueue.enqueue(input);
         assertEquals(input, mQueue.peek());
+        assertFalse(mQueue.isEmpty());
+    }
+
+    @Test
+    public void testIsEmptyAfterChange() {
+        mQueue.enqueue(1);
+        mQueue.dequeue();
+        assertTrue(mQueue.isEmpty());
     }
 
     @Test
