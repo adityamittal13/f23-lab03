@@ -120,14 +120,18 @@ public class IntQueueTest {
 
     @Test
     public void testEnsureCapacity() {
-        final int originalSize = 11;
+        final int originalSize = 10;
         for (int i = 0; i < originalSize; i++) {
             mQueue.enqueue(testList.get(i));
         }
+        mQueue.dequeue();
+        mQueue.enqueue(11);
+        mQueue.enqueue(12);
+        mQueue.dequeue();
         for (int i = 0; i < originalSize; i++) {
-            assertEquals(testList.get(i), mQueue.dequeue());
+            assertEquals(testList.get(i+2), mQueue.dequeue());
             assertEquals(originalSize - i - 1, mQueue.size());
-        
+        }
     }
 
     @Test
