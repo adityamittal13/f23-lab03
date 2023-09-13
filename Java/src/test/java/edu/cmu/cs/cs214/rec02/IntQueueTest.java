@@ -12,7 +12,10 @@ import java.util.Scanner;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNull;
 
 
 /**
@@ -72,6 +75,7 @@ public class IntQueueTest {
     @Test
     public void testIsEmptyAfterChange() {
         mQueue.enqueue(1);
+        assertTrue(mQueue.peek() == 1);
         mQueue.dequeue();
         assertTrue(mQueue.isEmpty());
     }
@@ -116,18 +120,14 @@ public class IntQueueTest {
 
     @Test
     public void testEnsureCapacity() {
-        final int originalSize = 10;
+        final int originalSize = 11;
         for (int i = 0; i < originalSize; i++) {
             mQueue.enqueue(testList.get(i));
         }
-        for (int i = originalSize; i < testList.size(); i++) {
-            mQueue.enqueue(testList.get(i));
-        }  
-        mQueue.enqueue(1);
-        for (int i = 0; i < testList.size(); i++) {
+        for (int i = 0; i < originalSize; i++) {
             assertEquals(testList.get(i), mQueue.dequeue());
-            assertEquals(testList.size() - i, mQueue.size());
-        }
+            assertEquals(originalSize - i - 1, mQueue.size());
+        
     }
 
     @Test
@@ -138,6 +138,11 @@ public class IntQueueTest {
         assertTrue(mQueue.isEmpty());
         assertTrue(mQueue.size() == 0);
         assertNull(mQueue.peek());
+    }
+
+    @Test
+    public void testDequeueEmpty() {
+        assertNull(mQueue.dequeue());
     }
 
 }
